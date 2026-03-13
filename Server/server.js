@@ -4,6 +4,7 @@ import pg from "pg";
 import dotenv from "dotenv";
 
 import restaurantRoutes from "./routes/restaurants.js";
+import bookingRoutes from "./routes/bookings.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/", restaurantRoutes);
+app.use("/", bookingRoutes);
 
 app.get("/", async (req, res) => {
   try {
