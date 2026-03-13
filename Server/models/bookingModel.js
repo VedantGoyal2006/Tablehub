@@ -48,3 +48,16 @@ export const addToWaitingList = async (user_id, restaurant_id, number_of_people,
   );
   return res.rows[0];
 };
+
+export const getBookingStatus = async (booking_id) => {
+  const res = await db.query(
+    `SELECT b.booking_id, b.status, b.arrival_time, r.name AS restaurant_name, t.table_number
+     FROM bookings b
+     JOIN restaurants r ON b.restaurant_id = r.restaurant_id
+     LEFT JOIN tables t ON b.table_id = t.table_id
+     WHERE b.booking_id = $1`,
+    [booking_id]
+  );
+
+  return res.rows[0];
+};
