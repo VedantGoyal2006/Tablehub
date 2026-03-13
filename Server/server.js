@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import pg from "pg";
 import dotenv from "dotenv";
 
+import restaurantRoutes from "./routes/restaurants.js";
+
 dotenv.config();
 
 const app = express();
@@ -20,6 +22,8 @@ db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use("/", restaurantRoutes);
 
 app.get("/", async (req, res) => {
   try {
