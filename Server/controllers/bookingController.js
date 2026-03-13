@@ -1,5 +1,6 @@
 import { checkAvailableTable, createBooking, addToWaitingList } from "../models/bookingModel.js";
 
+
 export const bookTable = async (req, res) => {
   try {
     const { user_id, restaurant_id, number_of_people, arrival_time } = req.body;
