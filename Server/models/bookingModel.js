@@ -61,3 +61,27 @@ export const getBookingStatus = async (booking_id) => {
 
   return res.rows[0];
 };
+
+export const getWaitingPosition = async (booking_id) => {
+
+  const bookingRes = await db.query(
+    "SELECT restaurant_id, arrival_time FROM bookings WHERE booking_id = $1",
+    [booking_id]
+  );
+
+  const booking = bookingRes.rows[0];
+
+  const queueRes = await db.query(
+    `SELECT COUNT(*) 
+     FROM bookings
+     WHERE restaurant_id = $1 
+     AND arrival_time = $2
+     AND status = 'waiting'
+     AND booking_id < $3`,
+    [booking.restaurant_id, booking.arrival_time, booking_id]
+  );
+
+  const position = parseInt(queueRes.rows[0].count) + 1;
+
+  return position;
+};
