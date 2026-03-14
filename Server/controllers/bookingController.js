@@ -1,6 +1,7 @@
 import { checkAvailableTable, createBooking, addToWaitingList } from "../models/bookingModel.js";
 import { getBookingStatus, getWaitingPosition } from "../models/bookingModel.js";
 import { cancelBooking, getFirstWaitingBooking, promoteWaitingBooking } from "../models/bookingModel.js";
+import { getUserBookings } from "../models/bookingModel.js";
 
 
 export const bookTable = async (req, res) => {
@@ -108,6 +109,25 @@ export const cancelBookingController = async (req, res) => {
     res.json({
       message: "Booking cancelled successfully"
     });
+
+  } catch (err) {
+
+    console.log(err);
+    res.status(500).json({ error: "Server error" });
+
+  }
+
+};
+
+export const getUserBookingsController = async (req, res) => {
+
+  try {
+
+    const { user_id } = req.params;
+
+    const bookings = await getUserBookings(user_id);
+
+    res.json(bookings);
 
   } catch (err) {
 
