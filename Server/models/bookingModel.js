@@ -15,20 +15,27 @@ db.connect();
 
 // Check for available table
 export const checkAvailableTable = async (restaurant_id, number_of_people, arrival_time) => {
+
   const tablesRes = await db.query(
     "SELECT * FROM tables WHERE restaurant_id = $1 AND capacity >= $2",
     [restaurant_id, number_of_people]
   );
+
   const tables = tablesRes.rows;
 
   for (let table of tables) {
     const bookingRes = await db.query(
-      "SELECT * FROM bookings WHERE table_id = $1 AND arrival_time = $2",
+      `SELECT * FROM bookings
+       WHERE table_id = $1
+       AND arrival_time BETWEEN $2 - INTERVAL '2 hour'
+                           AND $2 + INTERVAL '2 hour'`,
       [table.table_id, arrival_time]
     );
-    if (bookingRes.rows.length === 0) return table; // available
+    if (bookingRes.rows.length === 0) {
+      return table;
+    }
   }
-  return null; // no table available
+  return null;
 };
 
 // Create confirmed booking
