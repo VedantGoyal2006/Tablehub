@@ -92,3 +92,43 @@ export const getWaitingPosition = async (booking_id) => {
 
   return position;
 };
+
+// Cancel booking
+export const cancelBooking = async (booking_id) => {
+  const res = await db.query(
+    "UPDATE bookings SET status = 'cancelled' WHERE booking_id = $1 RETURNING *",
+    [booking_id]
+  );
+
+  return res.rows[0];
+};
+
+// Get first waiting booking
+export const getFirstWaitingBooking = async (restaurant_id, arrival_time) => {
+
+  const res = await db.query(
+    `SELECT * FROM bookings
+     WHERE restaurant_id = $1
+     AND arrival_time = $2
+     AND status = 'waiting'
+     ORDER BY booking_id ASC
+     LIMIT 1`,
+    [restaurant_id, arrival_time]
+  );
+
+  return res.rows[0];
+};
+
+// Promote waiting booking
+export const promoteWaitingBooking = async (booking_id, table_id) => {
+
+  const res = await db.query(
+    `UPDATE bookings
+     SET status = 'confirmed', table_id = $1
+     WHERE booking_id = $2
+     RETURNING *`,
+    [table_id, booking_id]
+  );
+
+  return res.rows[0];
+};

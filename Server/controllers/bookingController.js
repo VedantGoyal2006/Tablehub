@@ -1,5 +1,6 @@
 import { checkAvailableTable, createBooking, addToWaitingList } from "../models/bookingModel.js";
 import { getBookingStatus, getWaitingPosition } from "../models/bookingModel.js";
+import { cancelBooking, getFirstWaitingBooking, promoteWaitingBooking } from "../models/bookingModel.js";
 
 
 export const bookTable = async (req, res) => {
@@ -62,4 +63,57 @@ export const checkBookingStatus = async (req, res) => {
     res.status(500).json({ error: "Server error" });
 
   }
+};
+
+
+export const cancelBookingController = async (req, res) => {
+
+  try {
+
+    const { booking_id } = req.params;
+
+    const cancelled = await cancelBooking(booking_id);
+
+    if (!cancelled) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    const restaurant_id = cancelled.restaurant_id;
+    const arrival_time = cancelled.arrival_time;
+    const table_id = cancelled.table_id;
+
+    if (table_id) {
+
+      const waitingBooking = await getFirstWaitingBooking(
+        restaurant_id,
+        arrival_time
+      );
+
+      if (waitingBooking) {
+
+        const promoted = await promoteWaitingBooking(
+          waitingBooking.booking_id,
+          table_id
+        );
+
+        return res.json({
+          message: "Booking cancelled and waiting user promoted",
+          promoted_booking: promoted
+        });
+
+      }
+
+    }
+
+    res.json({
+      message: "Booking cancelled successfully"
+    });
+
+  } catch (err) {
+
+    console.log(err);
+    res.status(500).json({ error: "Server error" });
+
+  }
+
 };
