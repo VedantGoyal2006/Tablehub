@@ -155,3 +155,24 @@ export const getUserBookings = async (user_id) => {
   return res.rows;
 
 };
+
+export const getRestaurantBookings = async (restaurant_id) => {
+
+  const res = await db.query(
+    `SELECT 
+        b.booking_id,
+        b.user_id,
+        t.table_number,
+        b.number_of_people,
+        b.arrival_time,
+        b.status
+     FROM bookings b
+     JOIN tables t
+     ON b.table_id = t.table_id
+     WHERE b.restaurant_id = $1
+     ORDER BY b.arrival_time`,
+    [restaurant_id]
+  );
+
+  return res.rows;
+};
