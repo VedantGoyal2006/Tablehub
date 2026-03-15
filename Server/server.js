@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import restaurantRoutes from "./routes/restaurants.js";
 import bookingRoutes from "./routes/bookings.js";
+import tableRoutes from "./routes/tables.js";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 
 app.use("/restaurants", restaurantRoutes);
 app.use("/", bookingRoutes);
+app.use("/restaurants", tableRoutes);
 
 app.get("/", async (req, res) => {
   try {
