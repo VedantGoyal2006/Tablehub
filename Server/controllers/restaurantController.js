@@ -1,4 +1,4 @@
-import { fetchRestaurantsByCity, createRestaurant } from "../models/restaurantModel.js";
+import { fetchRestaurantsByCity, createRestaurant, updateRestaurantProfile } from "../models/restaurantModel.js";
 
 export const createRestaurantController = async (req, res) => {
   try {
@@ -24,5 +24,38 @@ export const getRestaurantsByCity = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Unable to fetch restaurants" });
+  }
+};
+
+export const updateRestaurantProfileController = async (req, res) => {
+  try {
+
+    const { restaurant_id } = req.params;
+
+    const {
+      address,
+      opening_time,
+      closing_time,
+      image_url
+    } = req.body;
+
+    const updatedRestaurant = await updateRestaurantProfile(
+      restaurant_id,
+      address,
+      opening_time,
+      closing_time,
+      image_url
+    );
+
+    res.json({
+      message: "Restaurant profile updated",
+      restaurant: updatedRestaurant
+    });
+
+  } catch (err) {
+
+    console.log(err);
+    res.status(500).json({ error: "Error updating restaurant profile" });
+
   }
 };

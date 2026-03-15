@@ -26,3 +26,25 @@ export const fetchRestaurantsByCity = async (city) => {
   const res = await db.query("SELECT * FROM restaurants WHERE city = $1", [city]);
   return res.rows;
 };
+
+export const updateRestaurantProfile = async (
+  restaurant_id,
+  address,
+  opening_time,
+  closing_time,
+  image_url
+) => {
+
+  const res = await db.query(
+    `UPDATE restaurants
+     SET address = $1,
+         opening_time = $2,
+         closing_time = $3,
+         image_url = $4
+     WHERE restaurant_id = $5
+     RETURNING *`,
+    [address, opening_time, closing_time, image_url, restaurant_id]
+  );
+
+  return res.rows[0];
+};
