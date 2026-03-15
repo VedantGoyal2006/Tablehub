@@ -13,6 +13,15 @@ const db = new pg.Client({
 
 db.connect();
 
+export const createRestaurant = async (owner_id, name, city) => {
+  const res = await db.query(
+    "INSERT INTO restaurants (owner_id, name, city) VALUES ($1,$2,$3) RETURNING *",
+    [owner_id, name, city]
+  );
+
+  return res.rows[0];
+};
+
 export const fetchRestaurantsByCity = async (city) => {
   const res = await db.query("SELECT * FROM restaurants WHERE city = $1", [city]);
   return res.rows;

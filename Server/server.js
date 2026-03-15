@@ -24,7 +24,7 @@ db.connect();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/", restaurantRoutes);
+app.use("/restaurants", restaurantRoutes);
 app.use("/", bookingRoutes);
 
 app.get("/", async (req, res) => {
