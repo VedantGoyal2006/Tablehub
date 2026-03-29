@@ -26,9 +26,9 @@ export const checkAvailableTable = async (restaurant_id, number_of_people, arriv
   for (let table of tables) {
     const bookingRes = await db.query(
       `SELECT * FROM bookings
-       WHERE table_id = $1
-       AND arrival_time BETWEEN $2 - INTERVAL '2 hour'
-                           AND $2 + INTERVAL '2 hour'`,
+      WHERE table_id = $1
+      AND arrival_time >= ($2::timestamp - INTERVAL '2 hour')
+      AND arrival_time <= ($2::timestamp + INTERVAL '2 hour')`,
       [table.table_id, arrival_time]
     );
     if (bookingRes.rows.length === 0) {
@@ -48,11 +48,17 @@ export const createBooking = async (user_id, restaurant_id, table_id, arrival_ti
 };
 
 // Add to waiting list
-export const addToWaitingList = async (user_id, restaurant_id, number_of_people, request_time) => {
+// Add to waiting (now inside bookings table)
+export const addToWaitingList = async (user_id, restaurant_id, number_of_people, arrival_time) => {
+
   const res = await db.query(
-    "INSERT INTO waiting_list (user_id, restaurant_id, number_of_people, request_time, status) VALUES ($1,$2,$3,$4,'waiting') RETURNING *",
-    [user_id, restaurant_id, number_of_people, request_time]
+    `INSERT INTO bookings 
+     (user_id, restaurant_id, number_of_people, arrival_time, status)
+     VALUES ($1,$2,$3,$4,'waiting')
+     RETURNING *`,
+    [user_id, restaurant_id, number_of_people, arrival_time]
   );
+
   return res.rows[0];
 };
 
@@ -175,4 +181,36 @@ export const getRestaurantBookings = async (restaurant_id) => {
   );
 
   return res.rows;
+};
+
+export const markNoShow = async (booking_id) => {
+
+  // Step 1: Mark booking as no-show
+  const res = await db.query(
+    `UPDATE bookings
+     SET status = 'no-show'
+     WHERE booking_id = $1
+     RETURNING *`,
+    [booking_id]
+  );
+
+  const booking = res.rows[0];
+  if (!booking) return null;
+
+  const { restaurant_id, arrival_time, table_id } = booking;
+
+  // Step 2: Get first waiting booking
+  const waitingBooking = await getFirstWaitingBooking(restaurant_id, arrival_time);
+
+  if (!waitingBooking) {
+    return { oldBooking: booking, promoted: null };
+  }
+
+  // Step 3: Promote waiting booking
+  const promoted = await promoteWaitingBooking(waitingBooking.booking_id, table_id);
+
+  return {
+    oldBooking: booking,
+    promoted
+  };
 };

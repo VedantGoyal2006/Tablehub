@@ -1,7 +1,7 @@
 import { checkAvailableTable, createBooking, addToWaitingList } from "../models/bookingModel.js";
 import { getBookingStatus, getWaitingPosition } from "../models/bookingModel.js";
 import { cancelBooking, getFirstWaitingBooking, promoteWaitingBooking } from "../models/bookingModel.js";
-import { getUserBookings } from "../models/bookingModel.js";
+import { getUserBookings, markNoShow } from "../models/bookingModel.js";
 
 
 export const bookTable = async (req, res) => {
@@ -136,4 +136,28 @@ export const getUserBookingsController = async (req, res) => {
 
   }
 
+};
+
+
+export const markNoShowController = async (req, res) => {
+  try {
+
+    const { booking_id } = req.params;
+
+    const result = await markNoShow(booking_id);
+
+    if (!result) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+
+    res.json({
+      message: "Marked as no-show",
+      old_booking: result.oldBooking,
+      promoted_booking: result.promoted
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error handling no-show" });
+  }
 };

@@ -7,6 +7,9 @@ import restaurantRoutes from "./routes/restaurants.js";
 import bookingRoutes from "./routes/bookings.js";
 import tableRoutes from "./routes/tables.js";
 
+import cors from "cors";
+
+
 dotenv.config();
 
 const app = express();
@@ -24,6 +27,7 @@ db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 app.use("/restaurants", restaurantRoutes);
 app.use("/", bookingRoutes);
