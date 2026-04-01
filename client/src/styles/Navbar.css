@@ -1,0 +1,53 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 40px;
+  background-color: #1a1a2e;
+  border-bottom: 2px solid #c9a84c;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: #c9a84c;
+  letter-spacing: 1px;
+  font-family: Georgia, serif;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.navbar-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: Georgia, serif;
+  transition: color 0.3s;
+}
+
+.navbar-link:hover {
+  color: #c9a84c;
+}
+
+.navbar-myBookingsBtn {
+  color: #1a1a2e;
+  background-color: #c9a84c;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: Georgia, serif;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.navbar-myBookingsBtn:hover {
+  background-color: #e0b84c;
+}
