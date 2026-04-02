@@ -1,0 +1,176 @@
+/* ── Page ───────────────────────────────── */
+.mybookings-page {
+  min-height: 100vh;
+  background-color: #0f0f1a;
+  font-family: Georgia, serif;
+  padding: 60px 20px;
+}
+
+/* ── Container ──────────────────────────── */
+.mybookings-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ── Title ──────────────────────────────── */
+.mybookings-title {
+  color: #c9a84c;
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.mybookings-subtitle {
+  color: #aaaaaa;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* ── User ID Bar ────────────────────────── */
+.userid-bar {
+  display: flex;
+  gap: 0px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(201, 168, 76, 0.2);
+  margin-bottom: 30px;
+}
+
+.userid-input {
+  flex: 1;
+  padding: 14px 20px;
+  font-size: 15px;
+  border: none;
+  outline: none;
+  font-family: Georgia, serif;
+  color: #1a1a2e;
+}
+
+.userid-btn {
+  padding: 14px 24px;
+  background-color: #c9a84c;
+  color: #1a1a2e;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+.userid-btn:hover {
+  background-color: #e0b84c;
+}
+
+/* ── Error & Status ─────────────────────── */
+.error-msg {
+  color: #ff6b6b;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.status-msg {
+  color: #aaaaaa;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* ── Bookings List ──────────────────────── */
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Booking Card ───────────────────────── */
+.booking-card {
+  background-color: #1a1a2e;
+  border: 1px solid #c9a84c33;
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.3s;
+}
+
+.booking-card:hover {
+  box-shadow: 0 8px 24px rgba(201, 168, 76, 0.15);
+}
+
+/* ── Card Header ────────────────────────── */
+.booking-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.booking-restaurant {
+  color: #c9a84c;
+  font-size: 20px;
+}
+
+/* ── Status Badge ───────────────────────── */
+.badge {
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.badge.confirmed {
+  background-color: #1a3a2a;
+  color: #4caf50;
+  border: 1px solid #4caf50;
+}
+
+.badge.waiting {
+  background-color: #3a2a1a;
+  color: #c9a84c;
+  border: 1px solid #c9a84c;
+}
+
+.badge.cancelled {
+  background-color: #2a1a1a;
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+}
+
+/* ── Card Body ──────────────────────────── */
+.booking-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.booking-card-body p {
+  color: #cccccc;
+  font-size: 15px;
+}
+
+.booking-card-body strong {
+  color: #ffffff;
+}
+
+/* ── Cancel Button ──────────────────────── */
+.cancel-btn {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #ff6b6b;
+  color: #ffffff;
+}
